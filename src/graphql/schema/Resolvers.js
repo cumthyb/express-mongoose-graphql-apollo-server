@@ -1,3 +1,4 @@
+const { faker } = require("@faker-js/faker");
 const userModel = require("../../models/userModel");
 
 const resolvers = {
@@ -12,7 +13,14 @@ const resolvers = {
   },
   Mutation: {
     async createUser(parent, args) {
-      const newUser = args.user;
+      let newUser = args.user;
+      let { lastName, name, email, password, status } = newUser;
+      name = name || faker.name.fullName({ lastName: lastName || "Trump" });
+      email = email || faker.internet.email();
+      password = password || faker.internet.password();
+      status = status || false;
+      newUser = { name, email, password, status };
+
       const user = new userModel(newUser);
       const result = await user.save();
       return result;

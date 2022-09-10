@@ -19,9 +19,14 @@ async function startServer() {
 }
 startServer();
 
+const { MONGODB_URL, PORT } = process.env;
+
 mongoose
-  .connect(process.env.MONGODB_URL)
+  .connect(MONGODB_URL)
   .then((rs) => {
-    app.listen(process.env.PORT, () => console.log(`server started at 3001`));
+    app.listen(PORT, () => {
+      console.log(`server started at ${PORT}`);
+      console.log(`debug your graphql service at http://localhost:${PORT}/graphql`);
+    });
   })
   .catch((err) => console.log(err));

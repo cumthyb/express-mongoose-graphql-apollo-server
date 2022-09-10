@@ -17,5 +17,8 @@
     "mongoose": "^6.5.4",
     "nodemon": "^2.0.19",
     "password-hash": "^1.2.2"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^7.5.0"
   }
 }
