@@ -56,13 +56,13 @@ const typeDefs = gql`
   type Query {
     getAllUsers: [User!]!
     getUserById(id: String): User
-    getAllHSBasic:[HSBasic!]!
+    getHSBasic(field: String, value: String): [HSBasic!]!
   }
 
   # Mutations
   type Mutation {
     createUser(user: UserInput): User!
-    createHSBasic(hsbasic: HSBasicInput): HSBasic!
+    createHSBasic(hsbasic: HSBasicInput): HSBasic
   }
 `;
 

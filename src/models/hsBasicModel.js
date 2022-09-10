@@ -4,59 +4,65 @@ const hsBasicSchema = new mongoose.Schema(
   {
     ts_code: {
       type: String,
+      unique: true,
       required: true,
+    },
+    symbol: {
+      type: String,
+      required: false,
     },
     name: {
       type: String,
-      required: true,
+      required: false,
     },
     area: {
       type: String,
-      required: true,
+      required: false,
     },
     industry: {
       type: String,
-      required: true,
+      required: false,
     },
     fullname: {
       type: String,
-      required: true,
+      required: false,
     },
     enname: {
       type: String,
-      required: true,
+      unique: true,
+      required: false,
     },
     cnspell: {
       type: String,
-      required: true,
+      required: false,
     },
     market: {
       type: String,
-      required: true,
+      required: false,
     },
     exchange: {
       type: String,
-      required: true,
+      required: false,
     },
     curr_type: {
       type: String,
-      required: true,
+      required: false,
     },
     list_status: {
       type: String,
-      required: true,
+      required: false,
     },
     list_date: {
       type: String,
-      required: true,
+      required: false,
     },
     delist_date: {
       type: String,
-      required: true,
+      required: false,
     },
     is_hs: {
       type: String,
-      required: true,
+      required: false,
     },
   },
   {

@@ -1,5 +1,5 @@
 require("dotenv").config();
-const TuShare = require("tushare-js");
+const TuShare = require("tushare-js").default;
 const { faker } = require("@faker-js/faker");
 const userModel = require("../../models/userModel");
 const hsBasicModel = require("../../models/hsBasicModel");
@@ -12,6 +12,15 @@ const resolvers = {
     async getUserById(parent, args) {
       const id = args.id;
       return await userModel.findById({ _id: id });
+    },
+    async getHSBasic(parent, args) {
+      const option = {};
+      if (args) {
+        console.log(args);
+        const { field, value } = args;
+        option[field] = value;
+      }
+      return await hsBasicModel.find(option);
     },
   },
   Mutation: {
@@ -31,20 +40,36 @@ const resolvers = {
     async createHSBasic(parent, args) {
       let newUser = args.user;
 
-      const { TUSHARE_HOST, TUSHARE_TOKEN } = process.env;
-      const ts = TuShare(TUSHARE_TOKEN,TUSHARE_HOST);
-      const res= await ts.query({
-        api_name:'stock_basic',
-        fields: ["ts_code", "symbol", "name", "area", "industry", "fullname", "enname", "cnspell", "market","exchange", "curr_type", "list_status", "list_date", "delist_date", "is_hs"]
-      })
-      
-      console.log(res)
-
-      newUser = res.data.items[0]
-
-      const hsBasic = new hsBasicModel(newUser);
-      const result = await hsBasic.save();
-      return result;
+      const { TUSHARE_TOKEN } = process.env;
+      const ts = TuShare(TUSHARE_TOKEN);
+      const res = await ts.query({
+        api_name: "stock_basic",
+        // params: { limit: "2" },
+        fields: [
+          "ts_code",
+          "name",
+          "symbol",
+          "area",
+          "industry",
+          "fullname",
+          "enname",
+          "cnspell",
+          "market",
+          "exchange",
+          "curr_type",
+          "list_status",
+          "list_date",
+          "delist_date",
+          "is_hs",
+        ],
+      });
+      let _all = [];
+      for (var i = 0; i < res.data.length; i++) {
+        const _stock = res.data[i];
+        const _hsBasic = new hsBasicModel(_stock);
+        _all.push(await _hsBasic.save());
+      }
+      return _all;
     },
   },
 };
